@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist de Partida de Veículos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(-45deg, #6a0dad, #8a2be2, #9370db, #9932cc);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            margin: 20px 0;
+        }
+
+        h1, h2 {
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        button {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #8a2be2;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background-color: #6a0dad;
+            transform: scale(1.05);
+        }
+
+        .welcome-message {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .vehicle-selector {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .checklist {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .checklist-item:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checklist-item label {
+            flex-grow: 1;
+            cursor: pointer;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .arrow-down {
+            text-align: center;
+            font-size: 2em;
+            margin: 10px 0;
+            animation: bounce 2s infinite;
+            display: none;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        #logoutBtn {
+            display: none;
+            margin-top: 20px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Checklist de Partida de Veículos</h1>
+        
+        <div id="loginSection">
+            <h2>Login</h2>
+            <form class="login-form" id="loginForm">
+                <input type="text" id="username" placeholder="Nome de usuário" required>
+                <input type="password" id="password" placeholder="Senha" required>
+                <button type="submit">Entrar</button>
+            </form>
+        </div>
+        
+        <div class="welcome-message" id="welcomeMessage"></div>
+        
+        <div class="arrow-down" id="arrowDown">↓</div>
+        
+        <select class="vehicle-selector" id="vehicleSelector">
+            <option value="" disabled selected>Selecione seu veículo</option>
+            <option value="car">Carro</option>
+            <option value="moto">Moto</option>
+            <option value="truck">Caminhão</option>
+            <option value="ufo">Disco Voador</option>
+        </select>
+        
+        <div class="checklist" id="checklist">
+            <div class="checklist-item">
+                <input type="checkbox" id="item1">
+                <label for="item1">Marcha em Neutro</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item2">
+                <label for="item2">Ligar Veículo</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item3">
+                <label for="item3">Colocar primeira</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item4">
+                <label for="item4">SOLTAR O FREIO DE MÃO</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item5">
+                <label for="item5">Olhar se pode sair e ir</label>
+            </div>
+        </div>
+
+        <button id="logoutBtn">Sair</button>
+    </div>
+    
+    <footer>
+        Proprietário da página: @Davi Wallyson Marques
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        // Configuração do Toastr
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const loginSection = document.getElementById('loginSection');
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            const vehicleSelector = document.getElementById('vehicleSelector');
+            const checklist = document.getElementById('checklist');
+            const arrowDown = document.getElementById('arrowDown');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            // Credenciais válidas
+            const VALID_USERNAME = "Erika Ferreira";
+            const VALID_PASSWORD = "123456";
+            
+            // Função para mostrar elementos da checklist
+            function showChecklistInterface(username) {
+                loginSection.style.display = 'none';
+                welcomeMessage.textContent = `Bem-vindo, ${username}!`;
+                welcomeMessage.style.display = 'block';
+                vehicleSelector.style.display = 'block';
+                arrowDown.style.display = 'block';
+                logoutBtn.style.display = 'block';
+            }
+            
+            // Verificar login ao carregar a página
+            function checkExistingLogin() {
+                const savedUsername = localStorage.getItem('username');
+                const savedPassword = localStorage.getItem('password');
+                
+                if (savedUsername && savedPassword) {
+                    if (savedUsername === VALID_USERNAME && savedPassword === VALID_PASSWORD) {
+                        showChecklistInterface(savedUsername);
+                        toastr.success('Login automático realizado!');
+                    } else {
+                        localStorage.removeItem('username');
+                        localStorage.removeItem('password');
+                    }
+                }
+            }
+            
+            // Verificar login existente ao carregar a página
+            checkExistingLogin();
+            
+            // Lidar com o login
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+                
+                if (username === VALID_USERNAME && password === VALID_PASSWORD) {
+                    // Salvar no localStorage
+                    localStorage.setItem('username', username);
+                    localStorage.setItem('password', password);
+                    
+                    // Mostrar interface da checklist
+                    showChecklistInterface(username);
+                    
+                    // Notificação de sucesso
+                    toastr.success('Login realizado com sucesso!');
+                } else {
+                    // Notificação de erro
+                    toastr.error('Usuário ou senha incorretos! Use: Erika Ferreira / 123456');
+                    document.getElementById('username').focus();
+                }
+            });
+            
+            // Lidar com a seleção de veículo
+            vehicleSelector.addEventListener('change', function() {
+                checklist.style.display = 'flex';
+                
+                // Adicionar um pequeno efeito visual quando um veículo é selecionado
+                checklist.style.animation = 'none';
+                void checklist.offsetWidth;
+                checklist.style.animation = 'fadeIn 0.5s ease-in-out';
+            });
+            
+            // Resetar checkboxes quando outro veículo é selecionado
+            vehicleSelector.addEventListener('change', function() {
+                const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+            });
+            
+            // Lidar com o logout
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('username');
+                localStorage.removeItem('password');
+                toastr.info('Você saiu do sistema. Redirecionando...');
+                setTimeout(() => location.reload(), 1000);
+            });
+        });
+    </script>
+</body>
+</html>
